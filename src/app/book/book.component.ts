@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { book } from './book';
 import { BookService } from '../services/book.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-book',
@@ -8,19 +9,17 @@ import { BookService } from '../services/book.service';
   styleUrls: ['./book.component.css'],
 })
 export class BookComponent implements OnInit {
+  vid!: string;
+  book!: book;
+
   books: book[] = [];
 
-  constructor(private bs: BookService) {}
+  constructor(private bs: BookService, private route: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    this.bs.getBooks().subscribe({
-      next: (res: book[]) => {
-        this.books = res;
-        console.log('got the ' + res);
-      },
-      complete: () => {
-        console.log('done');
-      },
+  ngOnInit() {
+    this.route.data.subscribe(({ book }) => {
+      console.log(book['volumeInfo']);
+      this.book = book['volumeInfo'];
     });
   }
 }

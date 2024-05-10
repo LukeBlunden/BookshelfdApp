@@ -15,4 +15,11 @@ export class BookService {
   public getBooks(): Observable<book[]> {
     return this.http.get<book[]>(`${this.apiServerUrl}/book/all`);
   }
+
+  public getBook(vid: string): Observable<any> {
+    let result = this.http.get(
+      `https://www.googleapis.com/books/v1/volumes/${vid}`
+    );
+    return result;
+  }
 }
