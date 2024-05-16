@@ -16,9 +16,15 @@ export class BookService {
     return this.http.get<book[]>(`${this.apiServerUrl}/book/all`);
   }
 
-  public getBook(vid: string): Observable<any> {
+  public searchBooks(search: string): Observable<any> {
+    return this.http.get(
+      `https://www.googleapis.com/books/v1/volumes?q=${search}`
+    );
+  }
+
+  public getBook(volumeId: string): Observable<any> {
     let result = this.http.get(
-      `https://www.googleapis.com/books/v1/volumes/${vid}`
+      `https://www.googleapis.com/books/v1/volumes/${volumeId}`
     );
     return result;
   }

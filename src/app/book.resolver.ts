@@ -12,5 +12,5 @@ export const bookResolver: ResolveFn<any> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): Observable<any> => {
-  return inject(BookService).getBook(route.paramMap.get('vid')!);
+  return inject(BookService).getBook(route.paramMap.get('volumeId')!);
 };

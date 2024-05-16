@@ -10,9 +10,17 @@
 // }
 
 export interface book {
+  volumeId: string;
   title: string;
   authors: string[];
-  imageLinks: object;
+  imageLinks: {
+    thumbnail: string;
+    smallThumbnail: string;
+    small: string;
+    medium: string;
+    large: string;
+    extraLarge: string;
+  };
   description: string;
   publishedDate: string;
   printType: string;

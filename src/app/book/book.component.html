@@ -1,7 +1,18 @@
-<p>book works!</p>
 <div *ngFor="let book of books">
   <!-- <img src="{{ book.cover }}" alt="Book cover" /> -->
 </div>
 
-<h1>{{ book.title }}</h1>
-<h2>{{ book.authors }}</h2>
+<div class="container">
+  <img src="{{ book.imageLinks.thumbnail }}" alt="" />
+  <h1>{{ book.title }} - {{ book.publishedDate }}</h1>
+  <h2 *ngFor="let author of book.authors" (click)="searchAuthor(author)">
+    {{ author }}
+  </h2>
+  <p>{{ book.description }}</p>
+</div>
+
+<!-- <div *ngIf="books.length != 0">
+  <p *ngFor="let book of books">
+    {{ book.title }}
+  </p>
+</div> -->

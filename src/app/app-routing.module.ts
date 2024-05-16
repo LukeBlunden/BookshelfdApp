@@ -6,7 +6,7 @@ import { bookResolver } from './book.resolver';
 const routes: Routes = [
   // { path: 'books', component: BookComponent },
   {
-    path: 'book/:vid',
+    path: 'book/:volumeId',
     component: BookComponent,
     resolve: { book: bookResolver },
   },

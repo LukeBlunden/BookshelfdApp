@@ -1,0 +1,234 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" style="color: white" href="/">Bookshelfd</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarColor02"
+    aria-controls="navbarColor02"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/book/E5khWQMmrTUC">Solaris</a>
+      </li>
+      <li>
+        <div class="dropdown" *ngIf="!username">
+          <button
+            class="btn dropdown-toggle nav-link"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Sign Up
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" (click)="onOpenModal('signUp')">Sign Up</a>
+            <a class="dropdown-item" (click)="onOpenModal('signIn')">Sign In</a>
+          </div>
+        </div>
+        <div class="dropdown" *ngIf="username">
+          <button
+            class="btn dropdown-toggle nav-link"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ username }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" (click)="onSignOut()">Sign Out</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="search">
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          type="search"
+          (ngModelChange)="search(key.value)"
+          #key="ngModel"
+          ngModel
+          name="key"
+          id="searchName"
+          class="form-control mr-sm-2"
+          placeholder="Search"
+          required
+        />
+      </form>
+      <div class="searchResults">
+        <div *ngIf="books.length != 0">
+          <a
+            class="searchResult"
+            href="/book/{{ book.volumeId }}"
+            *ngFor="let book of books"
+          >
+            {{ book.title }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Sign Up modal -->
+<div
+  class="modal fade"
+  id="signUpModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="signUpModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signUpModalLabel">Sign up</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #signUpForm="ngForm" (ngSubmit)="onSignUp(signUpForm)">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              ngModel
+              name="username"
+              class="form-control"
+              id="signup-username"
+              placeholder="Username"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              ngModel
+              name="email"
+              class="form-control"
+              id="email"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              ngModel
+              name="password"
+              class="form-control"
+              id="signup-password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="sign-up-form"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              [disabled]="signUpForm.invalid"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Sign Up
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sign In model -->
+<div
+  class="modal fade"
+  id="signInModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="signInModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signInModalLabel">Sign in</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #signInForm="ngForm" (ngSubmit)="onSignIn(signInForm)">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              ngModel
+              name="username"
+              class="form-control"
+              id="signin-username"
+              placeholder="Username"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              ngModel
+              name="password"
+              class="form-control"
+              id="signin-password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="sign-in-form"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              [disabled]="signInForm.invalid"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Sign In
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
