@@ -33,7 +33,22 @@ export class BookComponent implements OnInit {
     // });
   }
 
-  searchAuthor(author: string) {
+  public searchAuthor(author: string) {
     throw new Error('Method not implemented.');
+  }
+
+  public addBook(readStatus: string) {
+    switch (readStatus) {
+      case 'read':
+        this.bs.addBook(true, this.book.volumeId).subscribe({
+          error: (err: Error) => console.log('Error: ' + err.message),
+        });
+        break;
+      case 'toRead':
+        this.bs.addBook(false, this.book.volumeId).subscribe({
+          error: (err: Error) => console.log('Error: ' + err.message),
+        });
+        break;
+    }
   }
 }

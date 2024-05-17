@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookService } from '../services/book.service';
 import { book } from '../book/book';
 import { SharingService } from '../services/sharing.service';
@@ -11,7 +11,7 @@ import { DataService } from '../services/data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   books: book[] = [];
   username?: string;
 
@@ -22,19 +22,21 @@ export class NavbarComponent {
     private ds: DataService
   ) {}
 
+  ngOnInit(): void {
+    this.username = localStorage.getItem('username') || '';
+  }
+
   public async search(search: string): Promise<void> {
     this.books = [];
     let result = await this.bs.searchBooks(search);
     result.subscribe({
       next: (res) => {
-        // console.log(res['items']);
         this.books.length = 0;
         res.items.forEach((result: { id: string; volumeInfo: book }) => {
           console.log(result.id);
           result.volumeInfo.volumeId = result.id;
           this.books.push(result.volumeInfo);
         });
-        // this.ss.setData(this.books);
       },
     });
   }
@@ -55,6 +57,7 @@ export class NavbarComponent {
       next: (res) => {
         this.ds.saveData('accessToken', res.accessToken);
         this.username = user.value.username;
+        this.ds.saveData('username', user.value.username);
         user.reset();
         document.getElementById('sign-in-form')?.click();
       },
@@ -81,10 +84,6 @@ export class NavbarComponent {
       case 'signIn':
         button.setAttribute('data-target', '#signInModal');
         break;
-      // case 'delete':
-      //   this.deleteEmployee = employee;
-      //   button.setAttribute('data-target', '#deleteEmployeeModal');
-      //   break;
     }
 
     container?.appendChild(button);

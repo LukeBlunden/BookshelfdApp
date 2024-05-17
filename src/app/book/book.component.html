@@ -9,6 +9,10 @@
     {{ author }}
   </h2>
   <p>{{ book.description }}</p>
+  <button class="btn btn-light" (click)="addBook('read')">Already read</button>
+  <button class="btn btn-light" (click)="addBook('toRead')">
+    Want to read
+  </button>
 </div>
 
 <!-- <div *ngIf="books.length != 0">
