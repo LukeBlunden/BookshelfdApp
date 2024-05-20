@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../user/user';
-import { Observable, catchError } from 'rxjs';
+import { Observable, Subscriber, catchError, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 
@@ -23,5 +23,44 @@ export class AuthService {
       `${this.apiServerUrl}/auth/signin`,
       user
     );
+  }
+
+  public getUsername(): Observable<User> {
+    if (localStorage.getItem('accessToken') != null) {
+      let httpHeaders = {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      };
+
+      let requestOptions = {
+        headers: new HttpHeaders(httpHeaders),
+      };
+
+      return this.http.get<User>(
+        `${this.apiServerUrl}/auth/signedIn`,
+        requestOptions
+      );
+    } else {
+      return throwError(() => new Error('User not signed in'));
+    }
+  }
+
+  public signedIn(): Observable<boolean> {
+    console.log('SignedIn()');
+    if (localStorage.getItem('accessToken') != null) {
+      let httpHeaders = {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      };
+
+      let requestOptions = {
+        headers: new HttpHeaders(httpHeaders),
+      };
+
+      return this.http.get<boolean>(
+        `${this.apiServerUrl}/user/auth`,
+        requestOptions
+      );
+    } else {
+      return of(false);
+    }
   }
 }

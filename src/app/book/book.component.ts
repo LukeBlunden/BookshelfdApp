@@ -24,13 +24,9 @@ export class BookComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe(({ book }) => {
-      console.log(book['volumeInfo']);
-      this.book = book['volumeInfo'];
+      this.book = book.volumeInfo;
       this.book.volumeId = book.id;
     });
-    // this.ss.currentData.subscribe((data) => {
-    //   this.books = data;
-    // });
   }
 
   public searchAuthor(author: string) {

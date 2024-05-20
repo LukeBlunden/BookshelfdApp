@@ -5,6 +5,7 @@ import { SharingService } from '../services/sharing.service';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { DataService } from '../services/data.service';
+import { User } from '../user/user';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +24,13 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.username = localStorage.getItem('username') || '';
+    this.as.getUsername().subscribe({
+      next: (user: User) => (this.username = user.username),
+      error: () => {
+        this.username = '';
+        this.ds.clearData();
+      },
+    });
   }
 
   public async search(search: string): Promise<void> {
@@ -57,7 +64,7 @@ export class NavbarComponent implements OnInit {
       next: (res) => {
         this.ds.saveData('accessToken', res.accessToken);
         this.username = user.value.username;
-        this.ds.saveData('username', user.value.username);
+        // this.ds.saveData('username', user.value.username);
         user.reset();
         document.getElementById('sign-in-form')?.click();
       },
