@@ -21,31 +21,37 @@
           <button
             class="btn dropdown-toggle nav-link"
             type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
+            data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Sign Up
+            Sign In
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" (click)="onOpenModal('signUp')">Sign Up</a>
-            <a class="dropdown-item" (click)="onOpenModal('signIn')">Sign In</a>
-          </div>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <a class="dropdown-item" (click)="onOpenModal('signUp')"
+                >Sign Up</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="onOpenModal('signIn')"
+                >Sign In</a
+              >
+            </li>
+          </ul>
         </div>
         <div class="dropdown" *ngIf="username">
           <button
             class="btn dropdown-toggle nav-link"
             type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
+            data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
             {{ username }}
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" (click)="onSignOut()">Sign Out</a>
+            <li><a class="dropdown-item" (click)="onSignOut()">Sign Out</a></li>
           </div>
         </div>
       </li>
@@ -215,7 +221,7 @@
               type="button"
               id="sign-in-form"
               class="btn btn-secondary"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Close
             </button>

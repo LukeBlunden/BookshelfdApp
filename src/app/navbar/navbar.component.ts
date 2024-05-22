@@ -51,8 +51,8 @@ export class NavbarComponent implements OnInit {
   public onSignUp(user: NgForm) {
     this.as.addUser(user.value).subscribe({
       next: () => {
-        this.onOpenModal('signIn');
         user.reset();
+        this.onOpenModal('signIn');
         document.getElementById('sign-up-form')?.click();
       },
       error: (err) => console.log('Error: Username already exists'),
@@ -82,14 +82,14 @@ export class NavbarComponent implements OnInit {
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-bs-toggle', 'modal');
 
     switch (mode) {
       case 'signUp':
-        button.setAttribute('data-target', '#signUpModal');
+        button.setAttribute('data-bs-target', '#signUpModal');
         break;
       case 'signIn':
-        button.setAttribute('data-target', '#signInModal');
+        button.setAttribute('data-bs-target', '#signInModal');
         break;
     }
 
