@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { book } from './book';
 import { BookService } from '../services/book.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharingService } from '../services/sharing.service';
 
 @Component({
@@ -19,14 +19,30 @@ export class BookComponent implements OnInit {
   constructor(
     private bs: BookService,
     private route: ActivatedRoute,
-    private ss: SharingService
-  ) {}
+    private ss: SharingService,
+    private router: Router
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
+  }
 
   ngOnInit() {
     this.route.data.subscribe(({ book }) => {
       this.book = book.volumeInfo;
       this.book.volumeId = book.id;
     });
+    if (localStorage.getItem('accessToken') != null) {
+      this.bs.getReadStatus(this.book.volumeId).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.book.readStatus = data;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   public searchAuthor(author: string) {
@@ -46,5 +62,6 @@ export class BookComponent implements OnInit {
         });
         break;
     }
+    this.router.navigateByUrl(`book/${this.book.volumeId}`);
   }
 }

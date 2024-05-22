@@ -1,22 +1,26 @@
-<div *ngFor="let book of books">
-  <!-- <img src="{{ book.cover }}" alt="Book cover" /> -->
-</div>
-
-<div class="container">
-  <img src="{{ book.imageLinks.thumbnail }}" alt="" />
+<div class="mt-4">
+  <img src="{{ book.imageLinks.thumbnail }}" alt="Book cover" />
   <h1>{{ book.title }} - {{ book.publishedDate }}</h1>
-  <h2 *ngFor="let author of book.authors" (click)="searchAuthor(author)">
+  <h2
+    *ngFor="let author of book.authors"
+    (click)="searchAuthor(author)"
+    class="mb-4"
+  >
     {{ author }}
   </h2>
-  <p>{{ book.description }}</p>
-  <button class="btn btn-light" (click)="addBook('read')">Already read</button>
-  <button class="btn btn-light" (click)="addBook('toRead')">
+  <button
+    class="btn btn-light me-4"
+    (click)="addBook('read')"
+    [disabled]="book.readStatus"
+  >
+    Already read
+  </button>
+  <button
+    class="btn btn-light"
+    (click)="addBook('toRead')"
+    [disabled]="!book.readStatus && book.readStatus != null"
+  >
     Want to read
   </button>
+  <p class="mt-4" [innerHTML]="book.description"></p>
 </div>
-
-<!-- <div *ngIf="books.length != 0">
-  <p *ngFor="let book of books">
-    {{ book.title }}
-  </p>
-</div> -->

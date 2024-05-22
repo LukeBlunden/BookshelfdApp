@@ -127,4 +127,19 @@ export class BookService {
       return throwError(() => new Error('Must be signed in to add books'));
     }
   }
+
+  public getReadStatus(volumeId: string): Observable<boolean> {
+    let httpHeaders = {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    };
+
+    let requestOptions = {
+      headers: new HttpHeaders(httpHeaders),
+    };
+
+    return this.http.get<boolean>(
+      `${this.apiServerUrl}/book/readStatus/${volumeId}`,
+      requestOptions
+    );
+  }
 }

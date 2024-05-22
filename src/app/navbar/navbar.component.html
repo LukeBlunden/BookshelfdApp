@@ -13,9 +13,6 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarColor02">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/book/E5khWQMmrTUC">Solaris</a>
-      </li>
       <li>
         <div class="dropdown" *ngIf="!username">
           <button
@@ -54,6 +51,12 @@
             <li><a class="dropdown-item" (click)="onSignOut()">Sign Out</a></li>
           </div>
         </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/list/readBooks">Read books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/list/unreadBooks">Unread books</a>
       </li>
     </ul>
     <div class="search">
