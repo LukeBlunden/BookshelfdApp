@@ -1,10 +1,14 @@
 <h4>Want to read</h4>
 <app-bookshelf [books]="unreadBooks | slice : 0 : 6"></app-bookshelf>
 <div *ngIf="unreadBooks">
-  <p class="text-end" *ngIf="unreadBooks.length > 5">See more...</p>
+  <a class="d-inline" *ngIf="unreadBooks.length > 5" href="/list/unreadBooks"
+    >See more...</a
+  >
 </div>
 <h4>Already read</h4>
 <app-bookshelf [books]="readBooks | slice : 0 : 6"></app-bookshelf>
 <div *ngIf="readBooks" class="text-end">
-  <p class="d-inline" *ngIf="readBooks.length > 5">See more...</p>
+  <a class="d-inline" *ngIf="readBooks.length > 5" href="/list/readBooks"
+    >See more...</a
+  >
 </div>

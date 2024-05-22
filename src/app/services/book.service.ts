@@ -1,9 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, tap, throwError } from 'rxjs';
+import {
+  Observable,
+  filter,
+  forkJoin,
+  map,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { book } from '../book/book';
 import { environment } from 'src/environments/environment.development';
 import { DataService } from './data.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,30 +20,74 @@ import { DataService } from './data.service';
 export class BookService {
   private apiServerUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient, private ds: DataService) {}
+  constructor(
+    private http: HttpClient,
+    private ds: DataService,
+    private as: AuthService
+  ) {}
 
   public getBooks(): Observable<book[]> {
     return this.http.get<book[]>(`${this.apiServerUrl}/book/all`);
   }
 
   public getUserBooks(): Observable<book[]> {
-    console.log('getUserBooks()');
-    if (localStorage.getItem('accessToken') != null) {
-      let httpHeaders = {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      };
+    // console.log('getUserBooks()');
+    // if (localStorage.getItem('accessToken') != null) {
+    //   let httpHeaders = {
+    //     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    //   };
 
-      let requestOptions = {
-        headers: new HttpHeaders(httpHeaders),
-      };
+    //   let requestOptions = {
+    //     headers: new HttpHeaders(httpHeaders),
+    //   };
 
-      return this.http.get<book[]>(
-        `${this.apiServerUrl}/book/userBooks`,
-        requestOptions
-      );
-    } else {
-      return throwError(() => new Error('Must be signed in to get books'));
-    }
+    //   return this.http.get<book[]>(
+    //     `${this.apiServerUrl}/book/userBooks`,
+    //     requestOptions
+    //   );
+    // } else {
+    //   return throwError(() => new Error('Must be signed in to get books'));
+    // }
+    // https://stackoverflow.com/questions/58539587/how-to-loop-through-a-http-response-with-another-request-extending-the-initial
+    return this.as.signedIn().pipe(
+      filter((res) => {
+        if (!res) {
+          // this.initWithoutAuth();
+          return false;
+        } else return res;
+      }),
+      switchMap((res) => {
+        if (localStorage.getItem('accessToken') != null) {
+          let httpHeaders = {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          };
+
+          let requestOptions = {
+            headers: new HttpHeaders(httpHeaders),
+          };
+
+          return this.http.get<book[]>(
+            `${this.apiServerUrl}/book/userBooks`,
+            requestOptions
+          );
+        } else {
+          return throwError(() => new Error('Must be signed in to get books'));
+        }
+      }),
+      switchMap((res) => {
+        const books = res.map((dbBook) => {
+          return this.getBook(dbBook.volumeId).pipe(
+            map((gBook) => {
+              const newBook = gBook.volumeInfo;
+              newBook.readStatus = dbBook.readStatus;
+              newBook.volumeId = dbBook.volumeId;
+              return newBook;
+            })
+          );
+        });
+        return forkJoin(books);
+      })
+    );
   }
 
   public searchBooks(search: string): Observable<any> {

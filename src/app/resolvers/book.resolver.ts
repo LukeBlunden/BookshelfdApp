@@ -3,9 +3,8 @@ import {
   ResolveFn,
   RouterStateSnapshot,
 } from '@angular/router';
-import { book } from './book/book';
 import { inject } from '@angular/core';
-import { BookService } from './services/book.service';
+import { BookService } from '../services/book.service';
 import { Observable } from 'rxjs';
 
 export const bookResolver: ResolveFn<any> = (
