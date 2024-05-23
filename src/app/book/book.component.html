@@ -16,11 +16,18 @@
     Already read
   </button>
   <button
-    class="btn btn-light"
+    class="btn btn-light me-4"
     (click)="addBook('toRead')"
     [disabled]="!book.readStatus && book.readStatus != null"
   >
     Want to read
+  </button>
+  <button
+    [hidden]="book.readStatus == null"
+    class="btn btn-danger"
+    (click)="deleteBook()"
+  >
+    Remove
   </button>
   <p class="mt-4" [innerHTML]="book.description"></p>
 </div>

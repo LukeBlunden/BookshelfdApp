@@ -64,4 +64,9 @@ export class BookComponent implements OnInit {
     }
     this.router.navigateByUrl(`book/${this.book.volumeId}`);
   }
+
+  public deleteBook() {
+    this.bs.deleteBook(this.book.volumeId);
+    this.router.navigateByUrl(`book/${this.book.volumeId}`);
+  }
 }

@@ -142,4 +142,21 @@ export class BookService {
       requestOptions
     );
   }
+
+  public deleteBook(volumeId: string): void {
+    let httpHeaders = {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    };
+
+    let requestOptions = {
+      headers: new HttpHeaders(httpHeaders),
+    };
+
+    this.http
+      .delete<book>(
+        `${this.apiServerUrl}/book/delete/${volumeId}`,
+        requestOptions
+      )
+      .subscribe();
+  }
 }

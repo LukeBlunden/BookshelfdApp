@@ -33,6 +33,8 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  // Implement home reload? Bring auth to app.component?
+
   public async search(search: string): Promise<void> {
     this.books = [];
     let result = await this.bs.searchBooks(search);
