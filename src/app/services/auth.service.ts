@@ -45,7 +45,6 @@ export class AuthService {
   }
 
   public signedIn(): Observable<boolean> {
-    console.log('SignedIn()');
     if (localStorage.getItem('accessToken') != null) {
       let httpHeaders = {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

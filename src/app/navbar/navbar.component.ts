@@ -25,7 +25,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.as.getUsername().subscribe({
-      next: (user: User) => (this.username = user.username),
+      next: (user: User) => {
+        this.ss.signedIn.next(true);
+        this.username = user.username;
+      },
       error: () => {
         this.username = '';
         this.ds.clearData();
@@ -42,7 +45,6 @@ export class NavbarComponent implements OnInit {
       next: (res) => {
         this.books.length = 0;
         res.items.forEach((result: { id: string; volumeInfo: book }) => {
-          console.log(result.id);
           result.volumeInfo.volumeId = result.id;
           this.books.push(result.volumeInfo);
         });
@@ -69,6 +71,7 @@ export class NavbarComponent implements OnInit {
         // this.ds.saveData('username', user.value.username);
         user.reset();
         document.getElementById('sign-in-form')?.click();
+        this.ss.signedIn.next(true);
       },
       error: (err) => console.log(err),
     });
@@ -77,6 +80,7 @@ export class NavbarComponent implements OnInit {
   public onSignOut() {
     this.username = '';
     this.ds.clearData();
+    this.ss.signedIn.next(false);
   }
 
   public onOpenModal(mode: string) {

@@ -21,11 +21,7 @@ export class BookComponent implements OnInit {
     private route: ActivatedRoute,
     private ss: SharingService,
     private router: Router
-  ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => {
-      return false;
-    };
-  }
+  ) {}
 
   ngOnInit() {
     this.route.data.subscribe(({ book }) => {
@@ -35,11 +31,10 @@ export class BookComponent implements OnInit {
     if (localStorage.getItem('accessToken') != null) {
       this.bs.getReadStatus(this.book.volumeId).subscribe({
         next: (data) => {
-          console.log(data);
           this.book.readStatus = data;
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
       });
     }
@@ -49,24 +44,24 @@ export class BookComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  public addBook(readStatus: string) {
+  public addBook(readStatus: boolean) {
     switch (readStatus) {
-      case 'read':
+      case true:
         this.bs.addBook(true, this.book.volumeId).subscribe({
           error: (err: Error) => console.log('Error: ' + err.message),
         });
         break;
-      case 'toRead':
+      case false:
         this.bs.addBook(false, this.book.volumeId).subscribe({
           error: (err: Error) => console.log('Error: ' + err.message),
         });
         break;
     }
-    this.router.navigateByUrl(`book/${this.book.volumeId}`);
+    this.book.readStatus = readStatus;
   }
 
   public deleteBook() {
     this.bs.deleteBook(this.book.volumeId);
-    this.router.navigateByUrl(`book/${this.book.volumeId}`);
+    this.book.readStatus = null;
   }
 }

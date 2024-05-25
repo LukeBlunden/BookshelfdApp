@@ -10,7 +10,7 @@
 // }
 
 export interface book {
-  readStatus: boolean;
+  readStatus: boolean | null;
   volumeId: string;
   title: string;
   authors: string[];

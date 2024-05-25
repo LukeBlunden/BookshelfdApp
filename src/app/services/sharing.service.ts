@@ -5,10 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SharingService {
-  private data = new BehaviorSubject([]);
-  public currentData = this.data.asObservable();
+  signedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  public setData(data: any) {
-    this.data.next(data);
-  }
+  constructor() {}
 }

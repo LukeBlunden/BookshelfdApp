@@ -10,14 +10,14 @@
   </h2>
   <button
     class="btn btn-light me-4"
-    (click)="addBook('read')"
+    (click)="addBook(true)"
     [disabled]="book.readStatus"
   >
     Already read
   </button>
   <button
     class="btn btn-light me-4"
-    (click)="addBook('toRead')"
+    (click)="addBook(false)"
     [disabled]="!book.readStatus && book.readStatus != null"
   >
     Want to read

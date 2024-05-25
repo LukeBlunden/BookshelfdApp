@@ -19,6 +19,7 @@ import { AuthService } from './auth.service';
 })
 export class BookService {
   private apiServerUrl = environment.apiBaseUrl;
+  private apiKey = environment.apiKey;
 
   constructor(
     private http: HttpClient,
@@ -31,28 +32,10 @@ export class BookService {
   }
 
   public getUserBooks(): Observable<book[]> {
-    // console.log('getUserBooks()');
-    // if (localStorage.getItem('accessToken') != null) {
-    //   let httpHeaders = {
-    //     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    //   };
-
-    //   let requestOptions = {
-    //     headers: new HttpHeaders(httpHeaders),
-    //   };
-
-    //   return this.http.get<book[]>(
-    //     `${this.apiServerUrl}/book/userBooks`,
-    //     requestOptions
-    //   );
-    // } else {
-    //   return throwError(() => new Error('Must be signed in to get books'));
-    // }
     // https://stackoverflow.com/questions/58539587/how-to-loop-through-a-http-response-with-another-request-extending-the-initial
     return this.as.signedIn().pipe(
       filter((res) => {
         if (!res) {
-          // this.initWithoutAuth();
           return false;
         } else return res;
       }),
@@ -92,14 +75,13 @@ export class BookService {
 
   public searchBooks(search: string): Observable<any> {
     return this.http.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${search}`
+      `https://www.googleapis.com/books/v1/volumes?q=${search}&key=${this.apiKey}`
     );
   }
 
   public getBook(volumeId: string): Observable<any> {
-    console.log('getBook()');
     let result = this.http.get(
-      `https://www.googleapis.com/books/v1/volumes/${volumeId}`
+      `https://www.googleapis.com/books/v1/volumes/${volumeId}?key=${this.apiKey}`
     );
     return result;
   }
