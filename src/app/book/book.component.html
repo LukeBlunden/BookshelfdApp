@@ -1,5 +1,7 @@
 <div class="row mt-4">
+  <!-- Book cover and buttons -->
   <div class="col-3 text-center">
+    <!-- Checks for thumbnail otherwise uses placeholder -->
     <img
       *ngIf="book.imageLinks; else noImg"
       src="{{ book.imageLinks.thumbnail }}"
@@ -13,7 +15,7 @@
         class="img-fluid mb-4"
       />
     </ng-template>
-    <div class="d-grid gap-2">
+    <div class="d-grid gap-2" *ngIf="signedIn; else noAuth">
       <button
         type="button"
         class="btn btn-light"
@@ -39,15 +41,19 @@
         Remove
       </button>
     </div>
+    <ng-template #noAuth>
+      <p class="alert alert-info">Sign in to add books to reading lists</p>
+    </ng-template>
   </div>
+  <!-- Book text content -->
   <div class="col-9">
     <h1 class="display-4">{{ book.title }}</h1>
     <h2 *ngFor="let author of book.authors">
-      <a href="/search/author/{{ author }}">
+      <a class="link" href="/search/author/{{ author }}">
         {{ author }}
       </a>
     </h2>
-    <h4>{{ book.publishedDate }}</h4>
-    <p [innerHTML]="book.description"></p>
+    <h6>{{ book.publishedDate }}</h6>
+    <p [innerHTML]="book.description" class="mt-4"></p>
   </div>
 </div>

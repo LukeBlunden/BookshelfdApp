@@ -6,6 +6,7 @@ import { book } from '../book/book';
   templateUrl: './bookshelf.component.html',
   styleUrls: ['./bookshelf.component.css'],
 })
+// Recieves book info from parent class and displays in grid
 export class BookshelfComponent {
   @Input() books!: book[];
 }

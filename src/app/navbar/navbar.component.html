@@ -1,20 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" style="color: white" href="/">Bookshelfd</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarColor02"
-      aria-controls="navbarColor02"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- Sign in dropdown -->
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav mr-auto">
         <li>
+          <!-- Checks whether user is signed in or not via username -->
           <div class="dropdown" *ngIf="!username">
             <button
               class="btn dropdown-toggle nav-link"
@@ -55,6 +46,8 @@
             </div>
           </div>
         </li>
+
+        <!-- If user is signed in gives links for book lists -->
         <li class="nav-item" *ngIf="username">
           <a class="nav-link" href="/list/readBooks">Read books</a>
         </li>
@@ -62,6 +55,8 @@
           <a class="nav-link" href="/list/unreadBooks">Unread books</a>
         </li>
       </ul>
+
+      <!-- Search bar -->
       <div class="search">
         <form
           class="form-inline my-2 my-lg-0"
@@ -80,12 +75,13 @@
             required
           />
         </form>
+        <!-- Displays short list of results beneath bar -->
         <div class="searchResults bg-light">
-          <div *ngIf="books.length != 0 && key.value != null">
+          <div *ngIf="results.length != 0 && key.value != null">
             <a
               class="searchResult"
               href="/book/{{ book.volumeId }}"
-              *ngFor="let book of books | slice : 0 : 10"
+              *ngFor="let book of results | slice : 0 : 10"
             >
               {{ book.title }} - {{ book.authors }}
             </a>
@@ -96,7 +92,7 @@
   </div>
 </nav>
 
-<!-- Sign Up modal -->
+<!-- Sign Up modal, bootstrap boilerplate -->
 <div
   class="modal fade"
   id="signUpModal"
@@ -115,10 +111,11 @@
           data-dismiss="modal"
           aria-label="Close"
         >
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true" data-bs-dismiss="modal">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <!-- Sign up form, angular boilerplate -->
         <form #signUpForm="ngForm" (ngSubmit)="onSignUp(signUpForm)">
           <div class="form-group">
             <label for="username">Username</label>
@@ -161,7 +158,7 @@
               type="button"
               id="sign-up-form"
               class="btn btn-secondary"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Close
             </button>
@@ -179,7 +176,7 @@
   </div>
 </div>
 
-<!-- Sign In model -->
+<!-- Sign In model, bootstrap boilerplate -->
 <div
   class="modal fade"
   id="signInModal"
@@ -198,10 +195,11 @@
           data-dismiss="modal"
           aria-label="Close"
         >
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true" data-bs-dismiss="modal">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <!-- Sign in form, angular boilerplate -->
         <form #signInForm="ngForm" (ngSubmit)="onSignIn(signInForm)">
           <div class="form-group">
             <label for="username">Username</label>

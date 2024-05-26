@@ -1,16 +1,32 @@
-<div *ngIf="signedIn">
-  <h4>Want to read</h4>
-  <app-bookshelf [books]="unreadBooks | slice : 0 : 6"></app-bookshelf>
-  <div *ngIf="unreadBooks">
-    <a class="d-inline" *ngIf="unreadBooks.length > 6" href="/list/unreadBooks"
-      >See more...</a
-    >
+<div class="pt-4">
+  <!-- Checks user is signed in to see their reading list -->
+  <div *ngIf="signedIn; else noAuth">
+    <!-- Read books -->
+    <h4>Read</h4>
+    <!-- Shows up to 6 books on list -->
+    <app-bookshelf [books]="unreadBooks | slice : 0 : 6"></app-bookshelf>
+    <!-- Chesks for books in list, and will display message to see more if there are more than 6 -->
+    <div *ngIf="unreadBooks" class="text-end">
+      <a
+        class="d-inline"
+        *ngIf="unreadBooks.length > 6"
+        href="/list/unreadBooks"
+        >See more...</a
+      >
+    </div>
+    <!-- Unread books -->
+    <h4 class="pt-4">Unread</h4>
+    <!-- Shows up to 6 books on list -->
+    <app-bookshelf [books]="readBooks | slice : 0 : 6"></app-bookshelf>
+    <!-- Chesks for books in list, and will display message to see more if there are more than 6 -->
+    <div *ngIf="readBooks" class="text-end">
+      <a class="d-inline" *ngIf="readBooks.length > 6" href="/list/readBooks"
+        >See more...</a
+      >
+    </div>
   </div>
-  <h4>Already read</h4>
-  <app-bookshelf [books]="readBooks | slice : 0 : 6"></app-bookshelf>
-  <div *ngIf="readBooks" class="text-end">
-    <a class="d-inline" *ngIf="readBooks.length > 6" href="/list/readBooks"
-      >See more...</a
-    >
-  </div>
+  <!-- Message for unsigned in users -->
+  <ng-template #noAuth>
+    <h4>Sign in to see personal book lists</h4>
+  </ng-template>
 </div>

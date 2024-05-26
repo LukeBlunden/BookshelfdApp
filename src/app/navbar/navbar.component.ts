@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  books: book[] = [];
+  results: book[] = [];
   username?: string;
 
   constructor(
@@ -26,70 +26,87 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Retrieves user info from database
     this.as.getUsername().subscribe({
-      next: (user: User) => {
+      next: (user: { username: string }) => {
+        // If successful sets the user as signed in and get username for dropdown
         this.ss.signedIn.next(true);
         this.username = user.username;
       },
       error: () => {
+        // If unsuccessful, sets user as not signed in and clears any previous sign in data
+        this.ss.signedIn.next(false);
         this.username = '';
         this.ds.clearData();
       },
     });
   }
 
+  // Gets search results from search bar
   public search(search: string) {
-    this.books = [];
     let result = this.bs.searchBooks(search);
     result.subscribe({
       next: (res) => {
-        this.books.length = 0;
+        // Resets the results when search terms change
+        this.results.length = 0;
         res.items.forEach((result: { id: string; volumeInfo: book }) => {
+          // Gets volumeId and info for each search result and pushes to results
           result.volumeInfo.volumeId = result.id;
-          this.books.push(result.volumeInfo);
+          this.results.push(result.volumeInfo);
         });
       },
     });
   }
 
+  // navigates to more detailed search page on submitting search bar input
   public searchTerm(search: NgForm) {
     const term = search.value.key;
+    // Resets form and search results
     search.resetForm();
-    this.books = [];
+    this.results = [];
+    // Navigates to search page with searched term
     this.router.navigateByUrl(`/search/all/${term}`);
   }
 
+  // Submits new user to database
   public onSignUp(user: NgForm) {
     this.as.addUser(user.value).subscribe({
       next: () => {
+        // Resets inputs and closes modal
         user.reset();
-        this.onOpenModal('signIn');
         document.getElementById('sign-up-form')?.click();
+        // Redirects to sign in with new credentials, gets accessToken
+        this.onOpenModal('signIn');
       },
-      error: (err) => console.log('Error: Username already exists'),
+      error: (err) => console.error('Error: Username already exists'),
     });
   }
 
+  // Signs existing user in
   public onSignIn(user: NgForm) {
     this.as.signIn(user.value).subscribe({
       next: (res) => {
+        // Saves accessToken to local storage
         this.ds.saveData('accessToken', res.accessToken);
         this.username = user.value.username;
-        // this.ds.saveData('username', user.value.username);
+        // Sets user as signed in
+        this.ss.signedIn.next(true);
+        // Resets inputs and closes modal
         user.reset();
         document.getElementById('sign-in-form')?.click();
-        this.ss.signedIn.next(true);
       },
-      error: (err) => console.log(err),
+      error: (err) => console.error(err),
     });
   }
 
+  // signs user out, clears user data
   public onSignOut() {
     this.username = '';
     this.ds.clearData();
     this.ss.signedIn.next(false);
   }
 
+  // Controls opening of modals on clicking links
   public onOpenModal(mode: string) {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');

@@ -12,13 +12,17 @@ export class SearchComponent implements OnInit {
   results: book[] = [];
 
   constructor(private route: ActivatedRoute) {
+    // Gets search term from search resolver
     this.routeName = this.route.snapshot.params['term'];
   }
 
   ngOnInit(): void {
+    // Gets retrieved data from search resolver
     this.route.data.subscribe({
       next: (data) => {
+        // Resets search results on consecutive searches
         this.results = [];
+        // Sets the results
         data['results']['items'].forEach((item: any) => {
           const newBook: book = item['volumeInfo'];
           newBook.volumeId = item['id'];

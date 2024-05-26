@@ -12,11 +12,14 @@ export class ListComponent implements OnInit {
   bookList!: book[];
 
   constructor(private route: ActivatedRoute) {
+    // Retrives paramter for listname
     this.routeName = this.route.snapshot.params['name'];
   }
 
   ngOnInit(): void {
+    // Retrives data from list resolver
     this.route.data.subscribe(({ bookList }) => {
+      // Filters books based on read status
       switch (this.routeName) {
         case 'readBooks':
           this.bookList = bookList.filter((book: book) => book.readStatus);

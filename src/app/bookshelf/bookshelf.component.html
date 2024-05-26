@@ -1,35 +1,28 @@
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
-
-<div>
-  <div class="row position-relative mt-n1-9 bookshelf">
-    <div class="col-md-4 col-lg-2 mt-1-9" *ngFor="let book of books">
-      <div class="book-card text-center">
-        <a href="/book/{{ book.volumeId }}">
-          <div *ngIf="book.imageLinks; else noImg">
-            <img
-              src="{{ book.imageLinks.thumbnail }}"
-              class="border-radius-5"
-              alt="Book thumbnail"
-            />
-          </div>
-          <ng-template #noImg>
-            <img
-              src="/assets/images/images.png"
-              alt="Placeholderook cover"
-              class="img-fluid mb-4"
-            />
-          </ng-template>
-        </a>
-        <div class="book-info">
-          <h6 class="text-primary mb-1 h6">{{ book.title }}</h6>
-          <span class="font-weight-600 text-secondary">{{ book.authors }}</span>
+<div class="row position-relative mt-4 bookshelf">
+  <!-- Card for each book in list -->
+  <div class="col-md-4 col-lg-2 mt-1-9" *ngFor="let book of books">
+    <div class="book-card text-center">
+      <a href="/book/{{ book.volumeId }}">
+        <!-- Checks for book cover images otherwise displays placeholder -->
+        <div *ngIf="book.imageLinks; else noImg">
+          <img
+            src="{{ book.imageLinks.thumbnail }}"
+            class="border-radius-5"
+            alt="Book thumbnail"
+          />
         </div>
+        <ng-template #noImg>
+          <img
+            src="/assets/images/images.png"
+            alt="Placeholderook cover"
+            class="img-fluid mb-4"
+          />
+        </ng-template>
+      </a>
+      <!-- On hover book info -->
+      <div class="book-info">
+        <h6 class="text-primary mb-1 h6">{{ book.title }}</h6>
+        <span class="font-weight-600 text-secondary">{{ book.authors }}</span>
       </div>
     </div>
   </div>

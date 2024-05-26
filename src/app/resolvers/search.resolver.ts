@@ -13,13 +13,13 @@ export const searchResolver: ResolveFn<any> = (
 ) => {
   const type = route.paramMap.get('type');
   const term = route.paramMap.get('term');
+  // Checks is search is from search bar or for specific author
   switch (type) {
     case 'author':
       return inject(BookService).searchAuthor(term!);
-      break;
     case 'all':
       return inject(BookService).searchBooks(term!);
-      break;
+    default:
+      return new Error('invalid search type');
   }
-  return;
 };
