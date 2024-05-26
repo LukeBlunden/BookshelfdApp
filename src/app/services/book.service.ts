@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, filter, forkJoin, map, switchMap, throwError } from 'rxjs';
 import { book } from '../book/book';
 import { environment } from 'src/environments/environment.development';
-import { DataService } from './data.service';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -13,11 +12,7 @@ export class BookService {
   private apiServerUrl = environment.apiBaseUrl;
   private apiKey = environment.apiKey;
 
-  constructor(
-    private http: HttpClient,
-    private as: AuthService,
-    private ds: DataService
-  ) {}
+  constructor(private http: HttpClient, private as: AuthService) {}
 
   // Gets all books from database (not currently in user)
   public getBooks(): Observable<book[]> {
@@ -36,7 +31,7 @@ export class BookService {
       }),
       // If signed in, attempt to get user books from database
       switchMap((res) => {
-        if (this.ds.getData('accessToken') != null) {
+        if (localStorage.getItem('accessToken') != null) {
           return this.http.get<book[]>(
             `${this.apiServerUrl}/book/userBooks`,
             this.headers()
@@ -91,7 +86,7 @@ export class BookService {
       volumeId,
       readStatus,
     };
-    if (this.ds.getData('accessToken') != null) {
+    if (localStorage.getItem('accessToken') != null) {
       return this.http.post<any>(
         `${this.apiServerUrl}/book/add`,
         body,
@@ -124,7 +119,7 @@ export class BookService {
   private headers() {
     return {
       headers: new HttpHeaders({
-        Authorization: `Bearer ${this.ds.getData('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       }),
     };
   }

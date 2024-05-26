@@ -4,8 +4,6 @@ import { book } from '../book/book';
 import { SharingService } from '../services/sharing.service';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { DataService } from '../services/data.service';
-import { User } from '../user/user';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,7 +19,6 @@ export class NavbarComponent implements OnInit {
     private bs: BookService,
     private ss: SharingService,
     private as: AuthService,
-    private ds: DataService,
     private router: Router
   ) {}
 
@@ -37,7 +34,7 @@ export class NavbarComponent implements OnInit {
         // If unsuccessful, sets user as not signed in and clears any previous sign in data
         this.ss.signedIn.next(false);
         this.username = '';
-        this.ds.clearData();
+        localStorage.clear();
       },
     });
   }
@@ -87,8 +84,8 @@ export class NavbarComponent implements OnInit {
     this.as.signIn(user.value).subscribe({
       next: (res) => {
         // Saves accessToken to local storage
-        this.ds.saveData('accessToken', res.accessToken);
         this.username = user.value.username;
+        localStorage.setItem('accessToken', res.accessToken);
         // Sets user as signed in
         this.ss.signedIn.next(true);
         // Resets inputs and closes modal
@@ -102,7 +99,7 @@ export class NavbarComponent implements OnInit {
   // signs user out, clears user data
   public onSignOut() {
     this.username = '';
-    this.ds.clearData();
+    localStorage.clear();
     this.ss.signedIn.next(false);
   }
 

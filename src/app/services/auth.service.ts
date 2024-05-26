@@ -3,7 +3,6 @@ import { User } from '../user/user';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
-import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +10,7 @@ import { DataService } from './data.service';
 export class AuthService {
   private apiServerUrl: string = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient, private ds: DataService) {}
+  constructor(private http: HttpClient) {}
 
   // Adds new user to database
   public addUser(user: User): Observable<User> {
@@ -30,7 +29,7 @@ export class AuthService {
   // Gets username from database
   public getUsername(): Observable<{ username: string }> {
     // Checks user has an accessToken before attempting
-    if (this.ds.getData('accessToken') != null) {
+    if (localStorage.getItem('accessToken') != null) {
       return this.http.get<{ username: string }>(
         `${this.apiServerUrl}/auth/signedIn`,
         this.headers()
@@ -40,14 +39,12 @@ export class AuthService {
     }
   }
 
-  // Checks user is signed
+  // Checks user is signed in
   public signedIn(): Observable<boolean> {
     // Checks user has an accessToken before attempting
-    if (this.ds.getData('accessToken') != null) {
-      return this.http.get<boolean>(
-        `${this.apiServerUrl}/user/auth`,
-        this.headers()
-      );
+    if (localStorage.getItem('accessToken') != null) {
+      const headers = this.headers();
+      return this.http.get<boolean>(`${this.apiServerUrl}/user/auth`, headers);
     } else {
       return throwError(() => new Error('User not signed in'));
     }
@@ -57,7 +54,7 @@ export class AuthService {
   private headers() {
     return {
       headers: new HttpHeaders({
-        Authorization: `Bearer ${this.ds.getData('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       }),
     };
   }
