@@ -31,7 +31,7 @@ export class AuthService {
     // Checks user has an accessToken before attempting
     if (localStorage.getItem('accessToken') != null) {
       return this.http.get<{ username: string }>(
-        `${this.apiServerUrl}/auth/signedIn`,
+        `${this.apiServerUrl}/user/signedIn`,
         this.headers()
       );
     } else {
