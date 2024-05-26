@@ -1,33 +1,45 @@
-<div class="mt-4">
-  <img src="{{ book.imageLinks.thumbnail }}" alt="Book cover" />
-  <h1>{{ book.title }} - {{ book.publishedDate }}</h1>
-  <h2
-    *ngFor="let author of book.authors"
-    (click)="searchAuthor(author)"
-    class="mb-4"
-  >
-    {{ author }}
-  </h2>
-  <button
-    class="btn btn-light me-4"
-    (click)="addBook(true)"
-    [disabled]="book.readStatus"
-  >
-    Already read
-  </button>
-  <button
-    class="btn btn-light me-4"
-    (click)="addBook(false)"
-    [disabled]="!book.readStatus && book.readStatus != null"
-  >
-    Want to read
-  </button>
-  <button
-    [hidden]="book.readStatus == null"
-    class="btn btn-danger"
-    (click)="deleteBook()"
-  >
-    Remove
-  </button>
-  <p class="mt-4" [innerHTML]="book.description"></p>
+<div class="row mt-4">
+  <div class="col-3 text-center">
+    <img
+      src="{{ book.imageLinks.thumbnail }}"
+      alt="Book cover"
+      class="img-fluid mb-4"
+    />
+    <div class="d-grid gap-2">
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="addBook(true)"
+        [disabled]="book.readStatus"
+      >
+        Already read
+      </button>
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="addBook(false)"
+        [disabled]="!book.readStatus && book.readStatus != null"
+      >
+        Want to read
+      </button>
+      <button
+        type="button"
+        [hidden]="book.readStatus == null"
+        class="btn btn-outline-danger"
+        (click)="deleteBook()"
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+  <div class="col-9">
+    <h1 class="display-4">{{ book.title }}</h1>
+    <h2 *ngFor="let author of book.authors">
+      <a href="/search/author/{{ author }}">
+        {{ author }}
+      </a>
+    </h2>
+    <h4>{{ book.publishedDate }}</h4>
+    <p [innerHTML]="book.description"></p>
+  </div>
 </div>

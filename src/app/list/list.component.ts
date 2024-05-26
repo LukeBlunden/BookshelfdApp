@@ -23,6 +23,7 @@ export class ListComponent implements OnInit {
           break;
         case 'unreadBooks':
           this.bookList = bookList.filter((book: book) => !book.readStatus);
+          break;
       }
     });
   }

@@ -79,6 +79,13 @@ export class BookService {
     );
   }
 
+  public searchAuthor(author: string): Observable<any> {
+    author = author.replace(' ', '+');
+    return this.http.get(
+      `https://www.googleapis.com/books/v1/volumes?q=inauthor:"${author}"&maxResults=24&key=${this.apiKey}`
+    );
+  }
+
   public getBook(volumeId: string): Observable<any> {
     let result = this.http.get(
       `https://www.googleapis.com/books/v1/volumes/${volumeId}?key=${this.apiKey}`

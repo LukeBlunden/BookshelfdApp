@@ -40,9 +40,10 @@ export class BookComponent implements OnInit {
     }
   }
 
-  public searchAuthor(author: string) {
-    throw new Error('Method not implemented.');
-  }
+  // public searchAuthor(author: string) {
+  //   author = author.replace(' ', '+');
+  //   this.router.navigateByUrl(`/search/author/${author}`);
+  // }
 
   public addBook(readStatus: boolean) {
     switch (readStatus) {
