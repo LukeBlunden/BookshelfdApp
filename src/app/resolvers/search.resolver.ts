@@ -17,6 +17,9 @@ export const searchResolver: ResolveFn<any> = (
     case 'author':
       return inject(BookService).searchAuthor(term!);
       break;
+    case 'all':
+      return inject(BookService).searchBooks(term!);
+      break;
   }
   return;
 };

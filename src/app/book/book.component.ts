@@ -40,11 +40,6 @@ export class BookComponent implements OnInit {
     }
   }
 
-  // public searchAuthor(author: string) {
-  //   author = author.replace(' ', '+');
-  //   this.router.navigateByUrl(`/search/author/${author}`);
-  // }
-
   public addBook(readStatus: boolean) {
     switch (readStatus) {
       case true:

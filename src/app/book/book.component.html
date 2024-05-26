@@ -1,10 +1,18 @@
 <div class="row mt-4">
   <div class="col-3 text-center">
     <img
+      *ngIf="book.imageLinks; else noImg"
       src="{{ book.imageLinks.thumbnail }}"
       alt="Book cover"
       class="img-fluid mb-4"
     />
+    <ng-template #noImg>
+      <img
+        src="/assets/images/images.png"
+        alt="Placeholderook cover"
+        class="img-fluid mb-4"
+      />
+    </ng-template>
     <div class="d-grid gap-2">
       <button
         type="button"

@@ -1,11 +1,12 @@
 .search {
   position: relative;
+  float: right;
 }
 
 .searchResults {
-  font-size: 10px;
+  font-size: 12px;
   position: fixed;
-  max-width: 210px;
+  max-width: 300px;
   /* max-height: 460px; */
   z-index: 1;
   padding: 10px 0px 10px 10px;

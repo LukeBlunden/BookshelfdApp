@@ -13,14 +13,16 @@ export class SearchComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {
     this.routeName = this.route.snapshot.params['term'];
-    console.log(this.routeName);
   }
 
   ngOnInit(): void {
     this.route.data.subscribe({
       next: (data) => {
+        this.results = [];
         data['results']['items'].forEach((item: any) => {
-          this.results.push(item['volumeInfo']);
+          const newBook: book = item['volumeInfo'];
+          newBook.volumeId = item['id'];
+          this.results.push(newBook);
         });
       },
       error: (err) => console.error(err),

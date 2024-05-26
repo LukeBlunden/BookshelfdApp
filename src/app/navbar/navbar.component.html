@@ -63,7 +63,11 @@
         </li>
       </ul>
       <div class="search">
-        <form class="form-inline my-2 my-lg-0">
+        <form
+          class="form-inline my-2 my-lg-0"
+          #searchForm="ngForm"
+          (ngSubmit)="searchTerm(searchForm)"
+        >
           <input
             type="search"
             (ngModelChange)="search(key.value)"
@@ -76,14 +80,14 @@
             required
           />
         </form>
-        <div class="searchResults">
-          <div *ngIf="books.length != 0">
+        <div class="searchResults bg-light">
+          <div *ngIf="books.length != 0 && key.value != null">
             <a
               class="searchResult"
               href="/book/{{ book.volumeId }}"
-              *ngFor="let book of books"
+              *ngFor="let book of books | slice : 0 : 10"
             >
-              {{ book.title }}
+              {{ book.title }} - {{ book.authors }}
             </a>
           </div>
         </div>

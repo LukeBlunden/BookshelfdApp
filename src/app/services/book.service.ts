@@ -75,7 +75,7 @@ export class BookService {
 
   public searchBooks(search: string): Observable<any> {
     return this.http.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${search}&key=${this.apiKey}`
+      `https://www.googleapis.com/books/v1/volumes?q=${search}&maxResults=24&key=${this.apiKey}`
     );
   }
 

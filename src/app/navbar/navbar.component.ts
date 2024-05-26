@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { DataService } from '../services/data.service';
 import { User } from '../user/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,8 @@ export class NavbarComponent implements OnInit {
     private bs: BookService,
     private ss: SharingService,
     private as: AuthService,
-    private ds: DataService
+    private ds: DataService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -36,11 +38,9 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  // Implement home reload? Bring auth to app.component?
-
-  public async search(search: string): Promise<void> {
+  public search(search: string) {
     this.books = [];
-    let result = await this.bs.searchBooks(search);
+    let result = this.bs.searchBooks(search);
     result.subscribe({
       next: (res) => {
         this.books.length = 0;
@@ -50,6 +50,13 @@ export class NavbarComponent implements OnInit {
         });
       },
     });
+  }
+
+  public searchTerm(search: NgForm) {
+    const term = search.value.key;
+    search.resetForm();
+    this.books = [];
+    this.router.navigateByUrl(`/search/all/${term}`);
   }
 
   public onSignUp(user: NgForm) {
