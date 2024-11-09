@@ -1,6 +1,6 @@
 # Bookshelfd
 @author Luke Blunden  
-@version Java 17 
+@version Angular 16.2.12
 
 ## Description  
 This project is the front end of the bookshelfd application. Bookshelfd is designed to allow users to search for books using the Google books API, and to then add these books to their own personal reading lists by saving them to a database.
@@ -12,6 +12,7 @@ The front end was created using Angular, using bootstrap for some quick and dirt
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
 
 ## Features  
+* Authentication implemented to allow for saving of books in read lists to database
 * Search for books and add them to a list of either read or want to read. 
 
 ![image](https://github.com/user-attachments/assets/040792c5-f156-4614-bf19-7401acc03686)
